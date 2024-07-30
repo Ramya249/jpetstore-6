@@ -1,0 +1,21 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('git clone') {
+            steps {
+                git 'https://github.com/Ramya249/jpetstore-6.git'
+            }
+        }
+        stage('build') {
+            steps {
+                sh 'mvn clean package'
+            }
+        }
+        stage('deploy') {
+            steps {
+                deploy adapters: [tomcat9(credentialsId: '5db2a177-2c80-4ccc-ae8c-568cc1d03415', path: '', url: 'http://3.110.56.234:8081')], contextPath: 'sample18', war: '**/*.war'
+            }
+        }
+    }
+}
